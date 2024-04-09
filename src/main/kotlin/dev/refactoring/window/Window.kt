@@ -46,10 +46,10 @@ class Window(private val context: WindowContext) {
         glfwSetWindowSizeCallback(
             handle,
         ) { _, width, height ->
+            context.events.publish(EventResize(IntSize(width, height)))
+
             context.width = width
             context.height = height
-
-            context.events.publish(EventResize(IntSize(width, height)))
         }
 
         glfwMakeContextCurrent(handle);
