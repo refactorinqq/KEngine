@@ -13,15 +13,24 @@ class WindowContext(val events: EventManager) {
         }
     }
 
-    var width: Int by Delegates.observable(600) { _, _, newValue ->
-        if(window.isInitialized) {
-            window.setWindowSize(IntSize(newValue, height))
-        }
-    }
+    var _width = 600
+    var _height = 400
 
-    var height: Int by Delegates.observable(400) { _, _, newValue ->
-        if(window.isInitialized) {
-            window.setWindowSize(IntSize(newValue, width))
+    var width: Int
+        get() = _width
+        set(value) {
+            if (window.isInitialized) {
+                _width = value
+                window.setWindowSize(IntSize(value, height))
+            }
         }
-    }
+
+    var height: Int
+        get() = _height
+        set(value) {
+            if (window.isInitialized) {
+                _height = value
+                window.setWindowSize(IntSize(width, value))
+            }
+        }
 }

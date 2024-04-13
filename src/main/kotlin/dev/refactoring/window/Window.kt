@@ -1,8 +1,9 @@
 package dev.refactoring.window
 
+import dev.refactoring.data.Action
+import dev.refactoring.data.DoublePoint
 import dev.refactoring.data.IntSize
-import dev.refactoring.event.impl.EventKey
-import dev.refactoring.event.impl.EventResize
+import dev.refactoring.event.impl.*
 import dev.refactoring.window.exception.WindowInitializationException
 import org.lwjgl.glfw.GLFW.*
 import org.lwjgl.glfw.GLFWErrorCallback
@@ -38,8 +39,21 @@ class Window(private val context: WindowContext) {
             context.events.publish(EventKey(
                 key,
                 scancode,
-                action,
+                Action.of(action),
                 mods
+            ))
+        }
+
+        glfwSetCursorPosCallback(handle) { _, xpos, ypos ->
+            context.events.publish(EventMousePos(
+                DoublePoint(xpos, ypos)
+            ))
+        }
+
+        glfwSetMouseButtonCallback(handle) { _, button, action, _ ->
+            context.events.publish(EventMouseClick(
+                MouseButton.of(button),
+                Action.of(action)
             ))
         }
 
@@ -48,8 +62,8 @@ class Window(private val context: WindowContext) {
         ) { _, width, height ->
             context.events.publish(EventResize(IntSize(width, height)))
 
-            context.width = width
-            context.height = height
+            context._width = width
+            context._height = height
         }
 
         glfwMakeContextCurrent(handle);
