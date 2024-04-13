@@ -12,4 +12,7 @@ Currently, the library is still in a very experimental state and only has a few 
 ### TODO
 - [x] Window creation
 - [x] Basic event handling
-- [ ] Mouse & keyboard handling
+- [x] Mouse & keyboard handling
+- [ ] Game objects
+- [ ] Collision
+- [ ] Physics
